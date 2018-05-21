@@ -116,6 +116,19 @@ if (! function_exists('theme_path')) {
     }
 }
 
+if (! function_exists('temp_path')) {
+    /**
+     * Get the temp path.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function temp_path($path = '')
+    {
+        return app()->make('path.temp') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+    }
+}
+
 if (! function_exists('request')) {
     /**
      * Get an instance of the current request or an input item from the request.
@@ -180,18 +193,21 @@ if (! function_exists('router')) {
 
 if (! function_exists('view')) {
     /**
-     * @param null $viewName
-     * @param array $params
-     * @return \Nano7\View\ViewManager|\Nano7\View\View
+     * Get the evaluated view contents for the given view.
+     *
+     * @param  string  $view
+     * @param  array   $data
+     * @param  array   $mergeData
+     * @return \Nano7\View\View|\Nano7\View\Factory
      */
-    function view($viewName = null, $params = [])
+    function view($view = null, $data = [], $mergeData = [])
     {
-        $view = app('view');
+        $factory = app('view');
 
-        if (is_null($viewName)) {
-            return $view;
+        if (func_num_args() === 0) {
+            return $factory;
         }
 
-        return $view->make($viewName, $params);
+        return $factory->make($view, $data, $mergeData);
     }
 }

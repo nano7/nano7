@@ -3,6 +3,7 @@
 use Nano7\Http\Middlewares;
 use Illuminate\Http\Request;
 use FastRoute\Dispatcher as RouteDispatcher;
+use Nano7\View\View;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -97,6 +98,10 @@ class Router
      */
     public static function toResponse($request, $response)
     {
+        if ($response instanceof View) {
+            $response = $response->render();
+        }
+
         if (! $response instanceof Response) {
             $response = response($response);
         }

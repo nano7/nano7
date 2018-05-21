@@ -1,6 +1,7 @@
 <?php namespace Nano7;
 
 use Illuminate\Container\Container;
+use Nano7\Support\ServiceProvider;
 
 class Application extends Container
 {
@@ -22,6 +23,11 @@ class Application extends Container
      * @var bool
      */
     protected $booted = false;
+
+    /**
+     * @var array
+     */
+    protected $serviceProviders = [];
 
     /**
      * Create a new Illuminate application instance.
@@ -89,7 +95,8 @@ class Application extends Container
         $this->instance('path.base',   $this->basePath());
         $this->instance('path.app',    $this->basePath('app'));
         $this->instance('path.config', $this->basePath('app/config'));
-        $this->instance('path.theme',  $this->basePath('theme'));
+        $this->instance('path.theme',  $this->basePath('app/theme'));
+        $this->instance('path.temp',   $this->basePath('app/temp'));
     }
 
     /**
@@ -108,8 +115,58 @@ class Application extends Container
             return;
         }
 
+        // Boot providers
+        foreach ($this->serviceProviders as $provider) {
+            $this->bootProvider($provider);
+        }
+
         // Fire boot app
         event('app.boot', [$this->app]);
+
+        $this->booted = true;
+    }
+
+    public function register($provider)
+    {
+        // Verificar se provider já foi registrado
+        $keyProvider = is_string($provider) ? $provider : get_class($provider);
+        if (array_key_exists($keyProvider, $this->serviceProviders)) {
+            return $this->serviceProviders[$keyProvider];
+        }
+
+        // Carregar provider quando string
+        if (is_string($provider)) {
+            $provider = new $provider($this);
+        }
+
+        if (method_exists($provider, 'register')) {
+            $provider->register();
+        }
+
+        // Marcar como registrado
+        $this->serviceProviders[$keyProvider] = $provider;
+
+        // Verificar se deve
+        if ($this->booted) {
+            $this->bootProvider($provider);
+        }
+
+        return $provider;
+    }
+
+    /**
+     * Boot the given service provider.
+     *
+     * @param  ServiceProvider  $provider
+     * @return mixed
+     */
+    protected function bootProvider(ServiceProvider $provider)
+    {
+        if (method_exists($provider, 'boot')) {
+            return $this->call([$provider, 'boot']);
+        }
+
+        return null;
     }
 
     /**

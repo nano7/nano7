@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 // Routes.
 //------------------------------------------
 $router->get('/', function() {
-    return 'ola';
+    return view('hello');
+    //return 'ola';
 });
 
 //------------------------------------------

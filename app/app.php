@@ -27,9 +27,10 @@ $app->singleton('router', function () use ($app) {
     return new \Nano7\Http\Routing\Router();
 });
 
-$app->singleton('view', function () use ($app) {
-    return new \Nano7\View\ViewManager(theme_path('layouts'));
-});
+//---------------------------------------------------------------
+// Services Provider
+//---------------------------------------------------------------
+$app->register(new \Nano7\View\ViewServiceProvider($app));
 
 //---------------------------------------------------------------
 // Kerners
