@@ -21,6 +21,11 @@ class Router
     protected $dispatcher;
 
     /**
+     * @var null|Route
+     */
+    protected $current;
+
+    /**
      * Construtor.
      */
     public function __construct()
@@ -28,11 +33,20 @@ class Router
         $this->middlewares = new Middlewares();
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function handle(Request $request)
     {
         $route = $this->findRoute($request);
 
         //event(new Events\RouteMatched($route, $request));
+
+        // Ativar middlewares da rota
+        foreach ($route->middlewares() as $middleware) {
+            $this->middlewares->alias($middleware);
+        }
 
         // Executar middlewares
         $response = $this->middlewares->run($request, function(Request $request) use ($route) {
@@ -40,6 +54,14 @@ class Router
         });
 
         return $this->prepareResponse($request, $response);
+    }
+
+    /**
+     * @return Route|null
+     */
+    public function current()
+    {
+        return $this->current;
     }
 
     /**
@@ -52,17 +74,20 @@ class Router
     {
         $this->prepareRoutes();
 
-        $route = $this->dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
+        $finded = $this->dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
 
-        if ($route[0] == RouteDispatcher::NOT_FOUND) {
+        if ($finded[0] == RouteDispatcher::NOT_FOUND) {
             throw new NotFoundHttpException;
         }
 
-        if ($route[0] == RouteDispatcher::METHOD_NOT_ALLOWED) {
+        if ($finded[0] == RouteDispatcher::METHOD_NOT_ALLOWED) {
             throw new MethodNotAllowedHttpException([$request->getMethod()]);
         }
 
-        return new Route($route[1], $route[2]);
+        $route = $finded[1];
+        $route->setParams($finded[2]);
+
+        return $this->current = $route;
     }
 
     protected function prepareRoutes()

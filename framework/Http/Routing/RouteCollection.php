@@ -24,10 +24,15 @@ class RouteCollection
      *
      * @param string $route
      * @param mixed  $handler
+     * @return Route
      */
     public function get($route, $handler)
     {
-        $this->collector->addRoute(['GET','HEAD'], $route, $handler);
+        $route = new Route(['GET','HEAD'], $route, $handler);
+
+        $this->collector->addRoute($route->getMethods(), $route->getUri(), $route);
+
+        return $route;
     }
 
     /**
@@ -37,10 +42,15 @@ class RouteCollection
      *
      * @param string $route
      * @param mixed  $handler
+     * @return Route
      */
     public function post($route, $handler)
     {
-        $this->collector->addRoute('POST', $route, $handler);
+        $route = new Route(['POST'], $route, $handler);
+
+        $this->collector->addRoute($route->getMethods(), $route->getUri(), $route);
+
+        return $route;
     }
 
     /**
@@ -50,10 +60,15 @@ class RouteCollection
      *
      * @param string $route
      * @param mixed  $handler
+     * @return Route
      */
     public function put($route, $handler)
     {
-        $this->collector->addRoute('PUT', $route, $handler);
+        $route = new Route(['PUT'], $route, $handler);
+
+        $this->collector->addRoute($route->getMethods(), $route->getUri(), $route);
+
+        return $route;
     }
 
     /**
@@ -63,10 +78,15 @@ class RouteCollection
      *
      * @param string $route
      * @param mixed  $handler
+     * @return Route
      */
     public function delete($route, $handler)
     {
-        $this->collector->addRoute('DELETE', $route, $handler);
+        $route = new Route(['DELETE'], $route, $handler);
+
+        $this->collector->addRoute($route->getMethods(), $route->getUri(), $route);
+
+        return $route;
     }
 
     /**
@@ -76,10 +96,15 @@ class RouteCollection
      *
      * @param string $route
      * @param mixed  $handler
+     * @return Route
      */
     public function any($route, $handler)
     {
-        $this->collector->addRoute(['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], $route, $handler);
+        $route = new Route(['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], $route, $handler);
+
+        $this->collector->addRoute($route->getMethods(), $route->getUri(), $route);
+
+        return $route;
     }
 
     /**
@@ -92,14 +117,4 @@ class RouteCollection
             $callback(new RouteCollection($collector));
         });
     }
-
-    /**
-     * @param $name
-     * @param $arguments
-     * @return mixed
-     */
-    //public function __call($name, $arguments)
-    //{
-    //    return call_user_func_array([$this->collector, $name], $arguments);
-    //}
 }
