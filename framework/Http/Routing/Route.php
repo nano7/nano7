@@ -45,9 +45,9 @@ class Route
      */
     public function run(Request $request)
     {
-        $action = $this->action;
+        $args = array_merge([], [$request], array_values($this->params));
 
-        return $action($request, $this->params);
+        return call_user_func_array($this->action, $args);
     }
 
     /**
