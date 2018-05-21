@@ -191,6 +191,16 @@ if (! function_exists('router')) {
     }
 }
 
+if (! function_exists('route')) {
+    /**
+     * @return \Nano7\Http\Routing\Route|null
+     */
+    function route()
+    {
+        return router()->current();
+    }
+}
+
 if (! function_exists('view')) {
     /**
      * Get the evaluated view contents for the given view.

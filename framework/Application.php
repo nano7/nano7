@@ -37,6 +37,8 @@ class Application extends Container
      */
     public function __construct($basePath = null)
     {
+        error_reporting(E_ALL & ~E_NOTICE); // Exibe todos os erros, warnings, menos as noticias
+
         if ($basePath) {
             $this->setBasePath($basePath);
         }

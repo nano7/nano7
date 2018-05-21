@@ -15,7 +15,7 @@ $router->get('/', function() {
 //------------------------------------------
 // Routes.
 //------------------------------------------
-$router->get('/teste/{id}', function() {
+$router->get('/teste/{id}', function(Request $request, $id = null) {
     $args = func_get_args();
     return 'teste';
 });
