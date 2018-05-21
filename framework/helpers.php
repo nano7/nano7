@@ -177,3 +177,21 @@ if (! function_exists('router')) {
         return app('router');
     }
 }
+
+if (! function_exists('view')) {
+    /**
+     * @param null $viewName
+     * @param array $params
+     * @return \Nano7\View\ViewManager|\Nano7\View\View
+     */
+    function view($viewName = null, $params = [])
+    {
+        $view = app('view');
+
+        if (is_null($viewName)) {
+            return $view;
+        }
+
+        return $view->make($viewName, $params);
+    }
+}

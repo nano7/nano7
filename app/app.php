@@ -16,7 +16,7 @@ $app->singleton('config', function () use ($app) {
 });
 
 $app->singleton('files', function () use ($app) {
-    return new Illuminate\Filesystem\Filesystem();
+    return new \Nano7\Support\Filesystem();
 });
 
 $app->singleton('url', function () use ($app) {
@@ -25,6 +25,10 @@ $app->singleton('url', function () use ($app) {
 
 $app->singleton('router', function () use ($app) {
     return new \Nano7\Http\Routing\Router();
+});
+
+$app->singleton('view', function () use ($app) {
+    return new \Nano7\View\ViewManager(theme_path('layouts'));
 });
 
 //---------------------------------------------------------------
