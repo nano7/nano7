@@ -33,11 +33,6 @@ class DataManager
     protected $connections = [];
 
     /**
-     * @var Drivers
-     */
-    protected $drivers;
-
-    /**
      * Create a new manager instance.
      *
      * @param  Application  $app
@@ -48,7 +43,6 @@ class DataManager
     {
         $this->app    = $app;
         $this->config = $config;
-        $this->drivers = new Drivers($this->app);
     }
 
     /**
@@ -101,43 +95,48 @@ class DataManager
             throw new \InvalidArgumentException("config connection [$connection] not found.");
         }
 
+        $driver = Arr::get($config, 'driver');
+        if (is_null($driver)) {
+            throw new \InvalidArgumentException("driver connection [$connection] not information.");
+        }
+
         // We'll check to see if a creator method exists for the given connection. If not we
         // will check for a custom connection creator, which allows developers to create
         // connections using their own customized connection creator Closure to create it.
-        if (isset($this->customCreators[$connection])) {
-            return $this->callCustomCreator($connection, $config);
+        if (isset($this->customCreators[$driver])) {
+            return $this->callCustomCreator($driver, $config);
         } else {
-            $method = 'create' . Str::studly($connection) . 'Connection';
+            $method = 'create' . Str::studly($driver) . 'Connection';
 
             if (method_exists($this, $method)) {
                 return $this->$method($config);
             }
         }
-        throw new \InvalidArgumentException("connection [$connection] not supported.");
+        throw new \InvalidArgumentException("driver [$driver] connection [$connection] not supported.");
     }
 
     /**
      * Call a custom connection creator.
      *
-     * @param  string  $connection
+     * @param  string  $driver
      * @param  array   $config
      * @return ConnectionInterface
      */
-    protected function callCustomCreator($connection, $config)
+    protected function callCustomCreator($driver, $config)
     {
-        return $this->customCreators[$connection]($this->app, $this->drivers, $config);
+        return $this->customCreators[$driver]($this->app, $config);
     }
 
     /**
-     * Register a custom connection creator Closure.
+     * Register a custom driver connection creator Closure.
      *
-     * @param  string    $connection
+     * @param  string    $driver
      * @param  \Closure  $callback
      * @return $this
      */
-    public function extend($connection, \Closure $callback)
+    public function extend($driver, \Closure $callback)
     {
-        $this->customCreators[$connection] = $callback;
+        $this->customCreators[$driver] = $callback;
 
         return $this;
     }
