@@ -62,6 +62,58 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * Create new collection.
+     *
+     * @param $name
+     * @param array $options
+     */
+    public function createCollection($name, $options = [])
+    {
+        $this->db->createCollection($name, $options);
+    }
+
+    /**
+     * Drop a collection.
+     *
+     * @param $name
+     * @param array $options
+     */
+    public function dropCollection($name, $options = [])
+    {
+        $this->db->dropCollection($name, $options);
+    }
+
+    /**
+     * Create new index.
+     *
+     * @param $collection
+     * @param $key
+     * @param array $options
+     * @return string
+     */
+    public function createIndex($collection, $key, array $options = [])
+    {
+        $col = $this->db->selectCollection($collection);
+
+        return $col->createIndex($key, $options);
+    }
+
+    /**
+     * Drop a index.
+     *
+     * @param $collection
+     * @param $indexName
+     * @param array $options
+     * @return array|object
+     */
+    public function dropIndex($collection, $indexName, array $options = [])
+    {
+        $col = $this->db->selectCollection($collection);
+
+        return $col->dropIndex($indexName, $options);
+    }
+
+    /**
      * Run an insert statement against the database.
      *
      * @param  string $collection

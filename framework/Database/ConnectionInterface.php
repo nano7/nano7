@@ -13,22 +13,40 @@ interface ConnectionInterface
     public function collection($name);
 
     /**
-     * Run a select statement and return a single result.
+     * Create newq collection.
      *
-     * @param  string  $collection
-     * @param  array   $bindings
-     * @return mixed
+     * @param $name
+     * @param array $options
      */
-    //public function findOne($collection, $bindings = []);
+    public function createCollection($name, $options = []);
 
     /**
-     * Run a select statement against the database.
+     * Drop a collection.
      *
-     * @param  string  $collection
-     * @param  array   $bindings
-     * @return array
+     * @param $name
+     * @param array $options
      */
-    //public function find($collection, $bindings = []);
+    public function dropCollection($name, $options = []);
+
+    /**
+     * Create new index.
+     *
+     * @param $collection
+     * @param $key
+     * @param array $options
+     * @return string
+     */
+    public function createIndex($collection, $key, array $options = []);
+
+    /**
+     * Drop a index.
+     *
+     * @param $collection
+     * @param $indexName
+     * @param array $options
+     * @return array|object
+     */
+    public function dropIndex($collection, $indexName, array $options = []);
 
     /**
      * Run an insert statement against the database.

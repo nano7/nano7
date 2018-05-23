@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 //------------------------------------------
 $router->get('/', function() {
 
+    //db()->createCollection('bruno');
+    //$x = db()->createIndex('bruno', ['nome' => 1]);
+
     //$id = db()->insert('testes', ['nome' => 'Bruno']);
     //$x = db()->collection('testes')->where('nome', 'like', 'Bru%')->get();
     //$x = db()->collection('testes')->where('nome', 'like', 'Bru%')->first();
