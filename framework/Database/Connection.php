@@ -1,9 +1,9 @@
-<?php namespace Nano7\Database\MongoDb;
+<?php namespace Nano7\Database;
 
 use MongoDB\Client;
 use MongoDB\Database;
 use Illuminate\Support\Arr;
-use Nano7\Database\ConnectionInterface;
+use Nano7\Database\Query\Builder;
 
 class Connection implements ConnectionInterface
 {
@@ -49,23 +49,28 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * Get collection by name.
+     *
+     * @param $name
+     * @return Builder
+     */
+    public function collection($name)
+    {
+        $builder = new Builder($this, $name, $this->db->selectCollection($name));
+
+        return $builder;
+    }
+
+    /**
      * Run an insert statement against the database.
      *
      * @param  string $collection
      * @param  array $bindings
-     * @return bool|string
+     * @return null|string
      */
     public function insert($collection, $bindings = [])
     {
-        $col = $this->db->selectCollection($collection);
-
-        $r = $col->insertOne($bindings);
-
-        if ($r->getInsertedCount() > 0) {
-            return trim($r->getInsertedId());
-        }
-
-        return false;
+        return $this->collection($collection)->insertGetId($bindings);
     }
 
     /**

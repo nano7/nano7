@@ -1,7 +1,17 @@
 <?php namespace Nano7\Database;
 
+use Nano7\Database\Query\Builder;
+
 interface ConnectionInterface
 {
+    /**
+     * Get collection by name.
+     *
+     * @param $name
+     * @return Builder
+     */
+    public function collection($name);
+
     /**
      * Run a select statement and return a single result.
      *
@@ -28,22 +38,4 @@ interface ConnectionInterface
      * @return bool
      */
     public function insert($collection, $bindings = []);
-
-    /**
-     * Run an update statement against the database.
-     *
-     * @param  string  $collection
-     * @param  array   $bindings
-     * @return int
-     */
-    //public function update($collection, $bindings = []);
-
-    /**
-     * Run a delete statement against the database.
-     *
-     * @param  string  $collection
-     * @param  array   $bindings
-     * @return int
-     */
-    //public function delete($collection, $bindings = []);
 }

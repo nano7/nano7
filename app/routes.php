@@ -9,7 +9,14 @@ use Illuminate\Http\Request;
 //------------------------------------------
 $router->get('/', function() {
 
-    $id = db()->insert('testes', ['nome' => 'Bruno']);
+    //$id = db()->insert('testes', ['nome' => 'Bruno']);
+    //$x = db()->collection('testes')->where('nome', 'like', 'Bru%')->get();
+    //$x = db()->collection('testes')->where('nome', 'like', 'Bru%')->first();
+
+    //$x = db()->collection('testes')->where('nome', 'like', 'Bru%')->update(['sexo' => 'M']);
+    //$x = db()->collection('testes')->where('nome', 'like', 'Bru%')->delete();
+
+
 
     return view('hello');
     //return 'ola';

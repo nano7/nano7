@@ -1,6 +1,6 @@
 <?php namespace Nano7\Database;
 
-use Nano7\Database\MongoDb\Connection;
+use Nano7\Database\Connection;
 use Nano7\Support\ServiceProvider;
 
 class DatabaseServiceProviders extends ServiceProvider
