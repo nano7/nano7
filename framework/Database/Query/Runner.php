@@ -562,7 +562,7 @@ trait Runner
      * @param  mixed $id
      * @return mixed
      */
-    public function convertKey($id)
+    public static function convertKey($id)
     {
         if (is_string($id) && strlen($id) === 24 && ctype_xdigit($id)) {
             return new ObjectID($id);
