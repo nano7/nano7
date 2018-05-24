@@ -9,12 +9,6 @@ use Illuminate\Http\Request;
 //------------------------------------------
 $router->get('/', function() {
 
-    //$model = new \App\Teste();
-    $model = \App\Teste::query()->where('sexo', 'M')->first();
-    $model->nome = 'Bruno';
-    //$model->sexo = 'M';
-    $model->save();
-
     return view('hello');
 });
 

@@ -1,7 +1,7 @@
 <?php namespace Nano7\Database\Model;
 
 use Illuminate\Support\Str;
-use Nano7\Database\Query\Builder;
+use Nano7\Database\Query\Builder as QueryBuilder;
 
 class Model
 {
@@ -30,6 +30,48 @@ class Model
      * @var bool
      */
     public $exists = false;
+
+    /**
+     * Create a new Model model instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //$this->bootIfNotBooted();
+    }
+
+    /**
+     * @param array $attributes
+     * @param bool $save
+     * @return Model
+     */
+    public static function create(array $attributes, $save = true)
+    {
+        $instance = (new static);
+        $instance->fill($attributes);
+
+        if ($save) {
+            $instance->save();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * Fill the model with an array of attributes.
+     *
+     * @param  array  $attributes
+     * @return $this
+     */
+    public function fill(array $attributes)
+    {
+        foreach ($attributes as $key => $value) {
+            $this->setAttribute($key, $value);
+        }
+
+        return $this;
+    }
 
     /**
      * Get the collection associated with the model.
@@ -65,7 +107,26 @@ class Model
      */
     protected function connection()
     {
-        return db($this->connection);
+        return db($this->getConnectionName());
+    }
+
+    /**
+     * @param $connectionName
+     * @return $this
+     */
+    public function setConnection($connectionName)
+    {
+        $this->connection = $connectionName;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getConnectionName()
+    {
+        return $this->connection;
     }
 
     /**
@@ -81,6 +142,22 @@ class Model
      * @return Builder
      */
     protected function newQuery()
+    {
+        $query = new Builder();
+        $query->setModel($this);
+        $query->setQuery($this->connection()->collection($this->getCollection()));
+
+        // Adicionar escopos globais
+        //...
+
+        return $query;
+    }
+
+    /**
+     * Get new Query.
+     * @return QueryBuilder
+     */
+    protected function newQueryNotModel()
     {
         $query = $this->connection()->collection($this->getCollection());
 
@@ -99,12 +176,32 @@ class Model
     }
 
     /**
+     * Create a new instance of the given model.
+     *
+     * @param  array  $attributes
+     * @param  bool  $exists
+     * @return Model
+     */
+    public function newInstance($attributes = [], $exists = false)
+    {
+        $model = new static();
+        $model->fill((array) $attributes);
+        $model->syncOriginal();
+
+        $model->exists = $exists;
+
+        $model->setConnection($this->getConnectionName());
+
+        return $model;
+    }
+
+    /**
      * Processar inserção do documento..
      *
-     * @param  Builder  $query
+     * @param  QueryBuilder  $query
      * @return bool
      */
-    protected function performInsert(Builder $query)
+    protected function performInsert(QueryBuilder $query)
     {
         // Disparar evento de documento sendo criado
         if ($this->fireModelEvent('creating') === false) {
@@ -127,10 +224,10 @@ class Model
     /**
      * Processar alteração do documento.
      *
-     * @param  Builder  $query
+     * @param  QueryBuilder  $query
      * @return bool
      */
-    protected function performUpdate(Builder $query)
+    protected function performUpdate(QueryBuilder $query)
     {
         // Dosparar evento de documento sendo alterado
         if ($this->fireModelEvent('updating') === false) {
@@ -154,10 +251,10 @@ class Model
     /**
      * Processar exclusao do documento.
      *
-     * @param  Builder  $query
+     * @param  QueryBuilder $query
      * @return bool
      */
-    protected function performDelete(Builder $query)
+    protected function performDelete(QueryBuilder $query)
     {
         // Verificar se documento existe (que já foi carregado ou salvo)
         if (! $this->exists) {
@@ -189,7 +286,7 @@ class Model
      */
     public function save()
     {
-        $query = $this->newQuery();
+        $query = $this->newQueryNotModel();
 
         // Disparar evento que o documento esta sendo salvo
         if ($this->fireModelEvent('saving') === false) {
@@ -222,7 +319,7 @@ class Model
      */
     public function delete()
     {
-        $query = $this->newQuery();
+        $query = $this->newQueryNotModel();
 
         return $this->performDelete($query);
     }
@@ -269,6 +366,4 @@ class Model
     {
         return $this->setAttribute($name, $value);
     }
-
-
 }
