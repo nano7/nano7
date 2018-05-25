@@ -3,8 +3,9 @@
 use Nano7\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Filesystem\Filesystem;
 use Nano7\Http\Routing\Router;
+use Nano7\Http\Routing\Middlewares;
+use Illuminate\Filesystem\Filesystem;
 
 class Kernel
 {
