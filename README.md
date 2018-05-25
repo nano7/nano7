@@ -17,4 +17,4 @@ The Nano Framework PHP
  - [ ] Cache: Adicionar estrutura de Cache
  - [ ] Storage: Adicionar estrutura para armazenar arquivos remotos e distribuidos
  - [ ] Queue: Adicionar estrutura de filas
- - [ ] Estrutura de ENV
+ - [x] Estrutura de ENV
