@@ -106,7 +106,7 @@ class DataManager
         if (isset($this->customCreators[$driver])) {
             return $this->callCustomCreator($driver, $config);
         } else {
-            $method = 'create' . Str::studly($driver) . 'Connection';
+            $method = 'create' . Str::studly($driver) . 'Driver';
 
             if (method_exists($this, $method)) {
                 return $this->$method($config);

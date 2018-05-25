@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 // Routes.
 //------------------------------------------
 $router->get('/', function() {
+
+    $x = auth()->check();
+
     return view('hello');
 });
 
