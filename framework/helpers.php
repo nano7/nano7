@@ -238,3 +238,41 @@ if (! function_exists('db')) {
         return $db->connection($connection);
     }
 }
+
+if (! function_exists('trans')) {
+    /**
+     * @param null $key
+     * @param array $replace
+     * @param null $locale
+     * @return \Illuminate\Translation\Translator|string
+     */
+    function trans($key = null, array $replace = [], $locale = null)
+    {
+        $trans = app('translator');
+
+        if (is_null($key)) {
+            return $trans;
+        }
+
+        return $trans->getFromJson($key, $replace, $locale);
+    }
+}
+
+if (! function_exists('jargon')) {
+    /**
+     * @param null $key
+     * @param array $replace
+     * @param null $locale
+     * @return \Illuminate\Translation\Translator|string
+     */
+    function jargon($key = null, array $replace = [], $locale = null)
+    {
+        $trans = app('jargon');
+
+        if (is_null($key)) {
+            return $trans;
+        }
+
+        return $trans->getFromJson($key, $replace, $locale);
+    }
+}

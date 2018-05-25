@@ -99,6 +99,8 @@ class Application extends Container
         $this->instance('path.config', $this->basePath('app/config'));
         $this->instance('path.theme',  $this->basePath('app/theme'));
         $this->instance('path.temp',   $this->basePath('app/temp'));
+        $this->instance('path.lang',   $this->basePath('app/trans/langs'));
+        $this->instance('path.jargon', $this->basePath('app/trans/jargons'));
     }
 
     /**

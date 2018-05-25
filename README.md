@@ -3,7 +3,7 @@ The Nano Framework PHP
 
 ## TODO
  - [x] Translation: Adicionar estrutura de mult idiomas
-    - [ ] Implementar estrutura de jargões
+    - [x] Implementar estrutura de jargões
  - [ ] Validates: Adicionar estrutura de validacao de regras
     - [ ]  Implementar estrutura de table rules
  - [ ] ORM
