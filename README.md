@@ -8,7 +8,7 @@ The Nano Framework PHP
  - [ ] Validates: Adicionar estrutura de validacao de regras
     - [ ]  Implementar estrutura de table rules
  - [ ] ORM
-    - [ ] Adicionar relacionamentos no model
+    - [x] Adicionar relacionamentos no model
     - [ ] Adicionar validacoes no model
  - [ ] Console: Adicionar estrutura de comandos via console (Artisan)
  - [ ] HTTP
