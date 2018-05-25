@@ -10,7 +10,7 @@ class AuthServiceProviders extends ServiceProvider
      */
     public function register()
     {
-        $this->registerLoadModel();
+        $this->registerProvider();
 
         $this->registerManager();
     }
@@ -25,19 +25,21 @@ class AuthServiceProviders extends ServiceProvider
 
             $auth = new AuthManager($app, $config->get('auth.default'));
 
+            $this->registerGuardWeb($auth, $config);
+
             $this->registerGuardApi($auth, $config);
 
             return $auth;
         });
     }
 
-    protected function registerLoadModel()
+    /**
+     * Registrar provider.
+     */
+    protected function registerProvider()
     {
-        $this->app->bind('auth.model', function($app) {
-
-            $model = $app['config']->get('auth.model', '\App\Models\User');
-
-            return $app[$model];
+        $this->app->bind('auth.provider', function($app) {
+            return new Provider($app, $app['config']->get('auth.model', '\App\Models\User'));
         });
     }
 
@@ -50,20 +52,32 @@ class AuthServiceProviders extends ServiceProvider
     {
         $auth->extend('api', function($app) use ($config) {
 
-            // Provider para carrregar model
-            $provider = function($storageKey, $token) use ($app) {
-                $query = $app['auth.model']->query();
-
-                return $query->where($storageKey, '=', $token)->first();
-            };
-
             // Guard do token
             return new TokenGuard(
                 $app,
-                $provider,
+                $app['auth.provider'],
                 $app['request'],
                 $config->get('auth.token.inputKey', 'access_token'),
                 $config->get('auth.token.storageKey', 'api_token')
+            );
+        });
+    }
+
+    /**
+     * @param AuthManager $auth
+     * @param Repository $config
+     * @param $model
+     */
+    protected function registerGuardWeb(AuthManager $auth, Repository $config)
+    {
+        $auth->extend('web', function($app) use ($config) {
+
+            // Guard do token
+            return new SessionGuard(
+                $app,
+                $app['auth.provider'],
+                $app['request'],
+                $config->get('auth.session.name', 'netforce_session')
             );
         });
     }

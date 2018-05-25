@@ -42,4 +42,9 @@ class Teste extends Model implements UserInterface
     {
         return $this->senha;
     }
+
+    public function getRememberToken()
+    {
+        return '';
+    }
 }

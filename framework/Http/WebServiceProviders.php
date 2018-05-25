@@ -11,6 +11,8 @@ class WebServiceProviders extends ServiceProvider
     {
         $this->registerUrls();
 
+        $this->registerSession();
+
         $this->registerRouting();
     }
 
@@ -31,6 +33,18 @@ class WebServiceProviders extends ServiceProvider
     {
         $this->app->singleton('router', function () {
             return new \Nano7\Http\Routing\Router();
+        });
+    }
+
+    /**
+     * Register the session instance.
+     *
+     * @return void
+     */
+    protected function registerSession()
+    {
+        $this->app->singleton('session', function ($app) {
+            return new Session();
         });
     }
 }

@@ -7,11 +7,15 @@ use Illuminate\Http\Request;
 //------------------------------------------
 // Add middlewares.
 //------------------------------------------
-//$web->middleware('test', function(Request $request, Closure $next) {
-//    return $next($request);
-//});
+$web->middleware('session.start', function(Request $request, Closure $next) {
+
+    session()->setName('nano_session');
+    session()->start();
+
+    return $next($request);
+});
 
 //------------------------------------------
 // Add global alias middleware.
 //------------------------------------------
-//$web->alias('test');
+$web->alias('session.start');

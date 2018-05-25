@@ -46,7 +46,7 @@ class TokenGuard extends Guard
             return null;
         }
 
-        return $this->provider($this->storageKey, $token);
+        return $this->provider->getByCredentials([$this->storageKey => $token]);
     }
 
     /**

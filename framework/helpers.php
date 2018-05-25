@@ -310,3 +310,21 @@ if (! function_exists('auth')) {
         return $auth->guard($guard);
     }
 }
+
+if (! function_exists('session')) {
+    /**
+     * @param null $key
+     * @param null $default
+     * @return mixed|\Nano7\Http\Session
+     */
+    function session($key = null, $default = null)
+    {
+        $session = app('session');
+
+        if (is_null($key)) {
+            return $session;
+        }
+
+        return $session->get($key, $default);
+    }
+}

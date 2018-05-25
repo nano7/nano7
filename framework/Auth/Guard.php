@@ -17,15 +17,15 @@ abstract class Guard
     protected $user;
 
     /**
-     * @var \Closure
+     * @var Provider
      */
     protected $provider;
 
     /**
      * @param $app
-     * @param \Closure $provider
+     * @param Provider $provider
      */
-    public function __construct($app, $provider)
+    public function __construct($app, Provider $provider)
     {
         $this->app = $app;
         $this->provider = $provider;
@@ -44,7 +44,9 @@ abstract class Guard
         }
 
         // Carregar usuario
-        return $this->user = $this->retrieve();
+        $this->setUser($user = $this->retrieve());
+
+        return $user;
     }
 
     /**
@@ -68,21 +70,24 @@ abstract class Guard
     }
 
     /**
+     * Set the current user.
+     *
+     * @param  UserInterface  $user
+     * @return $this
+     */
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
+
+        //$this->loggedOut = false;
+
+        //$this->fireAuthenticatedEvent($user);
+
+        return $this;
+    }
+
+    /**
      * @return UserInterface
      */
     abstract protected function retrieve();
-
-    /**
-     * Carregar user interface.
-     *
-     * @return null|UserInterface
-     */
-    public function provider()
-    {
-        if (is_null($this->provider)) {
-            return null;
-        }
-
-        return call_user_func_array($this->provider, func_get_args());
-    }
 }

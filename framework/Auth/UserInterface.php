@@ -22,4 +22,11 @@ interface UserInterface
      * @return string
      */
     public function getAuthPassword();
+
+    /**
+     * Retorna o remeber token
+     *
+     * @return string
+     */
+    public function getRememberToken();
 }
