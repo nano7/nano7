@@ -6,6 +6,7 @@ use Illuminate\Http\Response;
 use Nano7\Http\Routing\Router;
 use Nano7\Http\Routing\Middlewares;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Kernel
 {
@@ -52,6 +53,8 @@ class Kernel
             // Preparar rotas
             return $this->runRoute($request);
 
+        } catch (HttpException $e) {
+            return Router::toResponse($request, $this->renderException($e));
         } catch (\Exception $e) {
             return Router::toResponse($request, sprintf('error: %s', $e->getMessage()));
         }
@@ -113,5 +116,19 @@ class Kernel
     public function middleware($alias, $middleware)
     {
         $this->middlewares->middleware($alias, $middleware);
+    }
+
+    /**
+     * @param HttpException $e
+     * @return string
+     */
+    protected function renderException(HttpException $e)
+    {
+        $view = 'errors.' . $e->getStatusCode();
+        if (view()->exists($view)) {
+            return view($view)->render();
+        }
+
+        return 'error: ' . $e->getStatusCode();
     }
 }
