@@ -7,11 +7,11 @@ The Nano Framework PHP
  - [x] Auth: Adicionar estruyura de autenticação interna e externa
  - [ ] Validates: Adicionar estrutura de validacao de regras
     - [ ]  Implementar estrutura de table rules
- - [ ] ORM
+ - [x] ORM
     - [x] Adicionar relacionamentos no model
     - [ ] Adicionar validacoes no model
  - [ ] Console: Adicionar estrutura de comandos via console (Artisan)
- - [ ] HTTP
+ - [x] HTTP
     - [ ] Adicionar controle de Cookie
     - [x] Adicionar controle de Session
  - [ ] Cache: Adicionar estrutura de Cache
