@@ -9,6 +9,7 @@ $app->register(new \Nano7\BaseServiceProviders($app));
 $app->register(new \Nano7\Database\DatabaseServiceProviders($app));
 $app->register(new \Nano7\Http\WebServiceProviders($app));
 $app->register(new \Nano7\View\ViewServiceProvider($app));
+$app->register(new \Nano7\Translation\TranslationServiceProvider($app));
 
 //---------------------------------------------------------------
 // Kerners

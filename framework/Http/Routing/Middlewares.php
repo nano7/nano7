@@ -1,4 +1,4 @@
-<?php namespace Nano7\Http;
+<?php namespace Nano7\Http\Routing;
 
 use Closure;
 use Illuminate\Http\Request;
