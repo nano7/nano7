@@ -10,7 +10,7 @@ return [
     | Implementado: api, web
     */
 
-    'default' => 'web',
+    'default' => env('AUTH_DEFAULT', 'web'),
 
     /*
     |--------------------------------------------------------------------------
@@ -19,5 +19,5 @@ return [
     */
 
 
-    'model' => '\App\Teste',
+    'model' => env('AUTH_MODEL', '\App\User'),
 ];

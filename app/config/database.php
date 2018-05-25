@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => 'app',
+    'default' => env('DB_CONNECTION_DEFAULT', 'app'),
 
     /*
     |--------------------------------------------------------------------------
@@ -35,14 +35,14 @@ return [
 
         'app' => [
             'driver'       => 'mongodb',
-            'host'         => 'localhost',
-            'port'         => 27017,
-            'database'     => 'app',
-            'username'     => 'root',
-            'password'     => 'sol',
+            'host'         => env('DB_HOST', 'localhost'),
+            'port'         => env('DB_POST', 27017),
+            'database'     => env('DB_DATABASE', 'app'),
+            'username'     => env('DB_USERNAME', 'root'),
+            'password'     => env('DB_PASSWORD', ''),
             'use_mongo_id' => false,
             'options' => [
-                'db' => 'admin',
+                'db' => env('DB_ADMIN', 'admin'),
             ]
         ],
     ],

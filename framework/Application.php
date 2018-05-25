@@ -1,5 +1,6 @@
 <?php namespace Nano7;
 
+use Dotenv\Dotenv;
 use Illuminate\Container\Container;
 use Nano7\Support\ServiceProvider;
 
@@ -44,6 +45,7 @@ class Application extends Container
         }
 
         $this->registerBaseBindings();
+        $this->registerEnv();
         //$this->registerBaseServiceProviders();
     }
 
@@ -59,6 +61,17 @@ class Application extends Container
         $this->instance('app', $this);
         $this->instance('Nano7\Application', $this);
         $this->instance('Illuminate\Contracts\Container\Container', $this);
+    }
+
+    /**
+     * Register the env bindings into the container.
+     *
+     * @return void
+     */
+    protected function registerEnv()
+    {
+        $env = new Dotenv($this->basePath());
+        $env->load();
     }
 
     /**
