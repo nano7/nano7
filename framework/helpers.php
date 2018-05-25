@@ -242,11 +242,28 @@ if (! function_exists('db')) {
 if (! function_exists('trans')) {
     /**
      * @param null $key
+     * @return string
+     */
+    function trans($key)
+    {
+        // TRaduzir para jargon
+        $value = jargon($key);
+
+        // Traduzir idioma
+        $value = lang($value);
+
+        return $value;
+    }
+}
+
+if (! function_exists('lang')) {
+    /**
+     * @param null $key
      * @param array $replace
      * @param null $locale
      * @return \Illuminate\Translation\Translator|string
      */
-    function trans($key = null, array $replace = [], $locale = null)
+    function lang($key = null, array $replace = [], $locale = null)
     {
         $trans = app('translator');
 
