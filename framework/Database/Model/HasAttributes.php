@@ -1,7 +1,6 @@
 <?php namespace Nano7\Database\Model;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 /**
  * Class HasAttributes
@@ -12,6 +11,7 @@ use Illuminate\Support\Str;
  * @method bool hasSetMutator($key)
  * @method mixed getMutateAttribute($key, $value)
  * @method mixed setMutateAttribute($key, $value)
+ * @method mixed getRelationValue($key)
  */
 trait HasAttributes
 {
@@ -44,12 +44,30 @@ trait HasAttributes
      */
     public function getAttribute($key)
     {
+        // Verificar se foi implemetado um relacionamento
+        $value = $this->getRelationValue($key);
+        if (! is_null($value)) {
+            return $value;
+        }
+
         // Verificar se o campo existe fisicamente ou foi implementado um mutator
         if (array_key_exists($key, $this->attributes) || $this->hasGetMutator($key)) {
             return $this->getAttributeValue($key);
         }
 
         return null;
+    }
+
+    /**
+     * Get an attribute from the array in model.
+     *
+     * @param  string  $key
+     * @param  mixed   $default
+     * @return mixed
+     */
+    public function getAttributeFromArray($key, $default = null)
+    {
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : $default;
     }
 
     /**
@@ -60,7 +78,7 @@ trait HasAttributes
      */
     protected function getAttributeValue($key)
     {
-        $value = isset($this->attributes[$key]) ? $this->attributes[$key] : null;
+        $value = $this->getAttributeFromArray($key);
 
         // Verificar se foi implementado um mutator
         if ($this->hasGetMutator($key)) {
@@ -84,9 +102,6 @@ trait HasAttributes
      */
     public function setAttribute($key, $value)
     {
-        // Marcar key como alterado
-        $this->changed[$key] = true;
-
         // First we will check for the presence of a mutator for the set operation
         // which simply lets the developers tweak the attribute as it is set on
         // the model, such as "json_encoding" an listing of data for storage.
@@ -99,17 +114,37 @@ trait HasAttributes
             $value = $this->setCast($key, $value);
         }
 
-        // Verificar se deve setar com subniveis
-        if (Str::contains($key, '.')) {
-            Arr::set($this->attributes, $key, $value);
+        return $this->setAttributeToArray($key, $value);
+    }
 
-            return $this;
-        }
+    /**
+     * Set an attribute to the array in model.
+     *
+     * @param  string  $key
+     * @param  mixed $value
+     * @return $this
+     */
+    public function setAttributeToArray($key, $value)
+    {
+        // Marcar key como alterado
+        $this->changed[$key] = true;
 
-
+        // Setar no array de atributos
         $this->attributes[$key] = $value;
 
         return $this;
+    }
+
+    /**
+     * Remove a attribute.
+     *
+     * @param $key
+     */
+    public function removeAttributeFromArray($key)
+    {
+        if (isset($this->attributes[$key])) {
+            unset($this->attributes[$key]);
+        }
     }
 
     /**

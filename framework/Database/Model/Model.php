@@ -9,6 +9,7 @@ class Model
     use HasEvents;
     use HasMutator;
     use HasAttributes;
+    use HasRelation;
 
     /**
      * The connection name for the model.

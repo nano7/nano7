@@ -4,6 +4,7 @@ The Nano Framework PHP
 ## TODO
  - [x] Translation: Adicionar estrutura de mult idiomas
     - [x] Implementar estrutura de jargões
+ - [ ] Auth: Adicionar estruyura de autenticação interna e externa
  - [ ] Validates: Adicionar estrutura de validacao de regras
     - [ ]  Implementar estrutura de table rules
  - [ ] ORM
@@ -16,4 +17,3 @@ The Nano Framework PHP
  - [ ] Cache: Adicionar estrutura de Cache
  - [ ] Storage: Adicionar estrutura para armazenar arquivos remotos e distribuidos
  - [ ] Queue: Adicionar estrutura de filas
- - [ ] Auth: Adicionar estruyura de autenticação interna e externa
