@@ -2,8 +2,9 @@
 
 use Nano7\Database\Model\Model;
 use Nano7\Database\Model\Builder;
+use Illuminate\Support\Collection;
 
-class ForeignOne extends Relation
+class ForeignMany extends Relation
 {
     /**
      * The Eloquent query builder instance.
@@ -20,23 +21,23 @@ class ForeignOne extends Relation
     protected $foreignKey;
 
     /**
-     * The associated key on the parent model.
+     * The local key of the parent model.
      *
      * @var string
      */
-    protected $ownerKey;
+    protected $localKey;
 
     /**
      * @param $parent
      * @param Builder $query
      */
-    public function __construct($parent, Builder $query, $foreignKey, $ownerKey)
+    public function __construct($parent, Builder $query, $foreignKey, $localKey)
     {
         parent::__construct($parent, $query->getModel());
 
         $this->query = $query;
         $this->foreignKey = $foreignKey;
-        $this->ownerKey = $ownerKey;
+        $this->localKey = $localKey;
 
         $this->addConstraints();
     }
@@ -56,16 +57,28 @@ class ForeignOne extends Relation
      */
     public function addConstraints()
     {
-        $this->query->where($this->ownerKey, '=', $this->parent->{$this->foreignKey});
+        $this->query->where($this->foreignKey, '=', $this->parent->{$this->localKey});
     }
 
     /**
      * Get the results of the relationship.
      *
-     * @return null|Model
+     * @return Collection
      */
     public function getResults()
     {
-        return $this->query->first() ?: $this->related->newInstance();
+        return $this->query->get();
+    }
+
+    /**
+     * @param array $attributes
+     * @return Model
+     */
+    public function make($attributes = [])
+    {
+        $item = $this->related->newInstance($attributes, false);
+        $item->{$this->foreignKey} = $this->parent->{$this->localKey};
+
+        return $item;
     }
 }

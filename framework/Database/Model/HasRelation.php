@@ -3,6 +3,7 @@
 use Illuminate\Support\Str;
 use Nano7\Database\Model\Relations\EmbedMany;
 use Nano7\Database\Model\Relations\EmbedOne;
+use Nano7\Database\Model\Relations\ForeignMany;
 use Nano7\Database\Model\Relations\ForeignOne;
 use Nano7\Database\Model\Relations\Relation;
 
@@ -53,6 +54,25 @@ trait HasRelation
         $ownerKey = $ownerKey ?: '_id';
 
         return new ForeignOne($this, $instance->query(), $foreignKey, $ownerKey);
+    }
+
+    /**
+     * Define a one-to-many relationship.
+     *
+     * @param  string  $related
+     * @param  string  $foreignKey
+     * @param  string  $localKey
+     * @return ForeignMany
+     */
+    public function foreignMany($related, $foreignKey = null, $localKey = null)
+    {
+        $instance = new $related;
+
+        $foreignKey = $foreignKey ?: Str::snake(class_basename($this)).'_id';
+
+        $localKey = $localKey ?: '_id';
+
+        return new ForeignMany($this, $instance->query(), $foreignKey, $localKey);
     }
 
     /**
