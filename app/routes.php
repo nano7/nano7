@@ -9,14 +9,18 @@ use Illuminate\Http\Request;
 //------------------------------------------
 $router->get('/', function() {
 
+    //$cliente = new \App\Cliente();
+    //$cliente->nome = 'Cliente 1';
+    //$cliente->save();
+
     $model = \App\Teste::query()->find('5b07f08bbd600306b00032c2');
 
     //$model = new \App\Teste();
     //$model->nome = 'Bruno';
-     $l = $model->lista()->add();
-    $l->logradouro = 'Herval do Oeste';
-    $l->numero = 293;
-    $l->complemento = 'Casa 1';
+    //$l = $model->lista()->add();
+    //$l->logradouro = 'Herval do Oeste';
+    //$l->numero = 293;
+    //$l->complemento = 'Casa 1';
     //if (isset($model->interno[0]))
     //{
     //    $model->interno[0]->delete();
@@ -25,6 +29,10 @@ $router->get('/', function() {
     //$model->interno->logradouro = '1';
     //$model->interno->numero = 2;
     //$model->interno->complemento = '3';
+
+    //$model->cliente_id = $cliente->getId();
+
+    $x = $model->cliente->nome;
 
     $model->save();
 

@@ -1,7 +1,9 @@
 <?php namespace Nano7\Database\Model;
 
+use Illuminate\Support\Str;
 use Nano7\Database\Model\Relations\EmbedMany;
 use Nano7\Database\Model\Relations\EmbedOne;
+use Nano7\Database\Model\Relations\ForeignOne;
 use Nano7\Database\Model\Relations\Relation;
 
 /**
@@ -17,6 +19,41 @@ trait HasRelation
      * @var array
      */
     protected $relations = [];
+
+    /**
+     * @param $related
+     * @param null $foreignKey
+     * @param null $ownerKey
+     * @param null $relation
+     * @return ForeignOne
+     */
+    public function foreignOne($related, $foreignKey = null, $ownerKey = null, $relation = null)
+    {
+        // If no relation name was given, we will use this debug backtrace to extract
+        // the calling method's name and use that as the relationship name as most
+        // of the time this will be what we desire to use for the relationships.
+        if (is_null($relation)) {
+            list(, $caller) = debug_backtrace(false);
+
+            $relation = $caller['function'];
+        }
+
+        $instance = new $related;
+
+        // If no foreign key was supplied, we can use a backtrace to guess the proper
+        // foreign key name by using the name of the relationship function, which
+        // when combined with an "_id" should conventionally match the columns.
+        if (is_null($foreignKey)) {
+            $foreignKey = Str::snake($relation) . '_id';
+        }
+
+        // Once we have the foreign key names, we'll just create a new Eloquent query
+        // for the related models and returns the relationship instance which will
+        // actually be responsible for retrieving and hydrating every relations.
+        $ownerKey = $ownerKey ?: '_id';
+
+        return new ForeignOne($this, $instance->query(), $foreignKey, $ownerKey);
+    }
 
     /**
      * @param $related

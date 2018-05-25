@@ -16,4 +16,9 @@ class Teste extends Model
     {
         return $this->embedMany('\App\Interno');
     }
+
+    public function cliente()
+    {
+        return $this->foreignOne('\App\Cliente');
+    }
 }
