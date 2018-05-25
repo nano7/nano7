@@ -10,10 +10,3 @@ use Illuminate\Http\Request;
 $router->get('/', function() {
     return view('hello');
 });
-
-//------------------------------------------
-// Routes.
-//------------------------------------------
-$router->get('/teste/{id}', function(Request $request, $id = null) {
-    return 'teste';
-});
