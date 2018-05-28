@@ -1,5 +1,6 @@
 <?php namespace Nano7\Foundation;
 
+use Nano7\Foundation\Discover\PackageManifest;
 use Nano7\Foundation\Support\ServiceProvider;
 
 class FoundationServiceProviders extends ServiceProvider
@@ -14,6 +15,8 @@ class FoundationServiceProviders extends ServiceProvider
         $this->registerFiles();
 
         $this->registerConfigs();
+
+        $this->registerDiscover();
     }
 
     /**
@@ -44,5 +47,18 @@ class FoundationServiceProviders extends ServiceProvider
         $this->app->singleton('config', function () {
             return new \Nano7\Foundation\Config\Repository();
         });
+    }
+
+    /**
+     * Register discover.
+     */
+    protected function registerDiscover()
+    {
+        $this->app->singleton('manifest', function () {
+            return new PackageManifest($this->app['files'], $this->app->basePath(), $this->app->basePath('app/packages.php'));
+        });
+        $this->app->alias('manifest', 'Nano7\Foundation\Discover\PackageManifest');
+
+        $this->command('\Nano7\Foundation\Discover\Console\PackageDiscoverCommand');
     }
 }
