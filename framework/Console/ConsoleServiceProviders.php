@@ -20,6 +20,9 @@ class ConsoleServiceProviders extends ServiceProvider
         $this->app->singleton('kernel.console', function ($app) {
             $console = new Kernel($app);
 
+            // Carregar definicoes do console via evento
+            event()->fire('register.commands', [$console]);
+
             // Carregar definicoes do console
             $console_file = app_path('console.php');
             if (file_exists($console_file)) {

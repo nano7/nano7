@@ -143,6 +143,12 @@ class Application extends Container
         $this->booted = true;
     }
 
+    /**
+     * Register services providers.
+     *
+     * @param $provider
+     * @return string
+     */
     public function register($provider)
     {
         // Verificar se provider já foi registrado
@@ -228,5 +234,25 @@ class Application extends Container
     public function getVersion()
     {
         return self::VERSION;
+    }
+
+    /**
+     * Return is running in mode web.
+     *
+     * @return bool
+     */
+    public function runningWeb()
+    {
+        return ($this['mode'] == 'web');
+    }
+
+    /**
+     * Return is running in mode console.
+     *
+     * @return bool
+     */
+    public function runningConsole()
+    {
+        return ($this['mode'] == 'console');
     }
 }

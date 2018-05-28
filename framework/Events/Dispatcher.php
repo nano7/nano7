@@ -151,10 +151,15 @@ class Dispatcher
 
         // Ordenar por prioridade
         krsort($listeners);
-        $listeners = array_merge($listeners);
+        $result = [];
+        foreach ($listeners as $list) {
+            foreach ($list as $listener) {
+                $result[] = $listener;
+            }
+        }
         //$listeners = call_user_func_array('array_merge', $listeners);
 
-        return $listeners;
+        return $result;
     }
 
     /**

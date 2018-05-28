@@ -51,4 +51,16 @@ abstract class ServiceProvider
 
         $this->app['view']->addNamespace($namespace, $path);
     }/**/
+
+    /**
+     * Register new command.
+     *
+     * @param $command
+     */
+    protected function command($command)
+    {
+        event()->listen('register.commands', function($console) use ($command) {
+            $console->command($command);
+        });
+    }
 }

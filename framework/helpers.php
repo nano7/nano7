@@ -347,6 +347,16 @@ if (! function_exists('cookie')) {
     }
 }
 
+if (! function_exists('console')) {
+    /**
+     * @return \Nano7\Console\Kernel
+     */
+    function console()
+    {
+        return app('kernel.console');
+    }
+}
+
 if (! function_exists('env')) {
     /**
      * Gets the value of an environment variable.
