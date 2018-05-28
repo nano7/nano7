@@ -221,4 +221,12 @@ class Application extends Container
     {
         return $this->getLocale() == $locale;
     }
+
+    /**
+     * @return string
+     */
+    public function getVersion()
+    {
+        return self::VERSION;
+    }
 }

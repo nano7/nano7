@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 define('NANO7_START', microtime(true));
@@ -6,28 +7,23 @@ define('NANO7_START', microtime(true));
 // Register The Auto Loader
 //--------------------------------------------------------------------------
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'/vendor/autoload.php';
 
 //--------------------------------------------------------------------------
 // Turn On The Lights
 //--------------------------------------------------------------------------
 
-$app = require_once __DIR__.'/../app/app.php';
+$app = require_once __DIR__.'/app/app.php';
 
 //--------------------------------------------------------------------------
 // Run The Application
 //--------------------------------------------------------------------------
 
-$web = $app->make('kernel.web');
+$cmd = $app->make('kernel.console');
 
 //--------------------------------------------------------------------------
-// Run Web
+// Run Console
 //--------------------------------------------------------------------------
-$response = $web->handle();
+$status = $cmd->handle($input = new Symfony\Component\Console\Input\ArgvInput, new Symfony\Component\Console\Output\ConsoleOutput);
 
-//--------------------------------------------------------------------------
-// Send response
-//--------------------------------------------------------------------------
-if ($response instanceof \Symfony\Component\HttpFoundation\Response) {
-    $response->send();
-}
+exit($status);
