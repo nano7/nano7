@@ -18,4 +18,4 @@ The Nano Framework PHP
  - [ ] Storage: Adicionar estrutura para armazenar arquivos remotos e distribuidos
  - [ ] Queue: Adicionar estrutura de filas
  - [x] Estrutura de ENV
- - [ ] Estrutura de migração do DB
+ - [x] Estrutura de migração do DB
