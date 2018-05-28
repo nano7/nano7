@@ -25,6 +25,14 @@
         }
     },
 
+    "extra": {
+        "nano7": {
+            "providers": [
+                "Nano7\\View\\ViewServiceProviders"
+            ]
+        }
+    },
+
     "minimum-stability": "dev",
     "prefer-stable"    : true
 }

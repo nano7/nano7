@@ -28,6 +28,14 @@
         }
     },
 
+    "extra": {
+        "nano7": {
+            "providers": [
+                "Nano7\\Http\\WebServiceProviders"
+            ]
+        }
+    },
+
     "minimum-stability": "dev",
     "prefer-stable"    : true
 }

@@ -42,6 +42,12 @@
         }
     },
 
+    "scripts": {
+        "post-autoload-dump"       : [
+            "@php cmd package:discover"
+        ]
+    },
+
     "config": {
         "preferred-install"  : "dist",
         "sort-packages"      : true,

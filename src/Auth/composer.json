@@ -25,6 +25,14 @@
         }
     },
 
+    "extra": {
+        "nano7": {
+            "providers": [
+                "Nano7\\Auth\\AuthServiceProviders"
+            ]
+        }
+    },
+
     "minimum-stability": "dev",
     "prefer-stable"    : true
 }
