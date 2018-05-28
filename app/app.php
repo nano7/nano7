@@ -12,9 +12,4 @@ $app->register(new \Nano7\View\ViewServiceProvider($app));
 $app->register(new \Nano7\Translation\TranslationServiceProvider($app));
 $app->register(new \Nano7\Auth\AuthServiceProviders($app));
 
-//---------------------------------------------------------------
-// Kerners
-//---------------------------------------------------------------
-$app->singleton('kernel.web', 'Nano7\Http\Kernel');
-
 return $app;

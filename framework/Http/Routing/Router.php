@@ -49,7 +49,7 @@ class Router
 
         // Executar middlewares
         $response = $this->middlewares->run($request, function(Request $request) use ($route) {
-            return $route->run($request);
+            return $this->prepareResponse($request, $route->run($request));
         });
 
         return $this->prepareResponse($request, $response);

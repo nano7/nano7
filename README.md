@@ -12,7 +12,7 @@ The Nano Framework PHP
     - [ ] Adicionar validacoes no model
  - [ ] Console: Adicionar estrutura de comandos via console (Artisan)
  - [x] HTTP
-    - [ ] Adicionar controle de Cookie
+    - [x] Adicionar controle de Cookie
     - [x] Adicionar controle de Session
  - [ ] Cache: Adicionar estrutura de Cache
  - [ ] Storage: Adicionar estrutura para armazenar arquivos remotos e distribuidos
