@@ -10,7 +10,7 @@ The Nano Framework PHP
  - [x] ORM
     - [x] Adicionar relacionamentos no model
     - [ ] Adicionar validacoes no model
- - [ ] Console: Adicionar estrutura de comandos via console (Artisan)
+ - [x] Console: Adicionar estrutura de comandos via console (Artisan)
  - [x] HTTP
     - [x] Adicionar controle de Cookie
     - [x] Adicionar controle de Session
