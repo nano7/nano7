@@ -13,4 +13,12 @@ $app->register(new \Nano7\View\ViewServiceProvider($app));
 $app->register(new \Nano7\Foundation\Translation\TranslationServiceProvider($app));
 $app->register(new \Nano7\Auth\AuthServiceProviders($app));
 
+//---------------------------------------------------------------
+// Services Provider Configured
+//---------------------------------------------------------------
+$providers = $app->make('manifest')->providers();
+foreach ($providers as $provider) {
+    $app->register(new $provider($app));
+}
+
 return $app;
